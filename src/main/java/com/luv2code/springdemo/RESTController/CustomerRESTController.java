@@ -3,6 +3,7 @@ package com.luv2code.springdemo.RESTController;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,5 +47,14 @@ public class CustomerRESTController {
 	public Customer updateCustomer(@RequestBody Customer theCustomer) {
 		customerService.saveCustomer(theCustomer);
 		return theCustomer;
+	}
+	
+	@DeleteMapping("deleteCustomer/{customerId}")
+	public boolean deleteCustomer(@PathVariable int customerId) {
+		Customer cust = customerService.getCustomer(customerId);
+		if(cust == null)
+			throw new CustomerNotFoundException("ID is not valid!");
+		customerService.deleteCustomer(customerId);
+		return true;
 	}
 }
